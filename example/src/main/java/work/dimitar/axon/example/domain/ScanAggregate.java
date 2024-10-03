@@ -30,6 +30,11 @@ public class ScanAggregate {
     public ScanAggregate(Commands.ReceiveScanCommand command) {
         log.info("ScanAggregate: scan received command: [{}]", command);
 
+        if (this.scanId == null) {
+            log.warn("ScanAggregate: Already initialized");
+           // return;
+        }
+
         apply(Events.ScanReceivedEvent.builder()
                 .scanId(command.scanId)
                 .hardwareId(command.hardwareId)
