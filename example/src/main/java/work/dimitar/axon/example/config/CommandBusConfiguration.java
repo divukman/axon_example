@@ -1,6 +1,7 @@
 package work.dimitar.axon.example.config;
 
 import org.axonframework.commandhandling.CommandMessage;
+import org.axonframework.commandhandling.SimpleCommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.commandhandling.gateway.DefaultCommandGateway;
 import org.axonframework.commandhandling.gateway.RetryScheduler;
@@ -11,15 +12,16 @@ import java.util.List;
 
 @Configuration
 public class CommandBusConfiguration {
-
+/*
     @Bean
     public CommandGateway commandGateway() {
         // Create a CommandGateway with custom retry scheduler
         return DefaultCommandGateway.builder()
+                .commandBus(SimpleCommandBus.builder().build())
                 .retryScheduler(retryScheduler())  // Specify retry scheduler
                 .build();
     }
-
+*/
     RetryScheduler retryScheduler() {
         return new RetryScheduler() {
             @Override
