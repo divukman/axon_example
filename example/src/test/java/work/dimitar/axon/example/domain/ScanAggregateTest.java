@@ -16,6 +16,7 @@ class ScanAggregateTest {
     private AggregateTestFixture<ScanAggregate> fixture;
 
     private Commands.ReceiveScanCommand scanCommand;
+    private Commands.ReceiveScanCommand scanCommand2;
     private Commands.OtherCommand otherCommand;
 
     private Events.ScanReceivedEvent scanReceivedEvent;
@@ -27,6 +28,12 @@ class ScanAggregateTest {
 
         scanCommand = Commands.ReceiveScanCommand.builder()
                 .scanId(UUID.randomUUID())
+                .scanTime(Instant.now())
+                .hardwareId("abcdef1234")
+                .build();
+
+        scanCommand2 = Commands.ReceiveScanCommand.builder()
+                .scanId(scanCommand.scanId)
                 .scanTime(Instant.now())
                 .hardwareId("abcdef1234")
                 .build();
@@ -65,6 +72,14 @@ class ScanAggregateTest {
     @Test
     public void shouldNotRunSameCommand() {
         fixture.given(scanReceivedEvent)
+                .when(scanCommand)
+                .expectNoEvents();
+    }
+
+    @Test
+    public void shouldLogOnReceiveScanTwice() {
+        fixture.givenNoPriorActivity()
+                .andGivenCommands(scanCommand, scanCommand2)
                 .when(scanCommand)
                 .expectNoEvents();
     }
